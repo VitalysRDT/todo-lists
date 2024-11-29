@@ -9,7 +9,7 @@ async function lists(fastify: FastifyInstance) {
 
 
   // fastify.post('/', listsController.addList)
-  fastify.post('/', listsController.addList)
+  fastify.post('/', listsController.addLists)
 
 }
 

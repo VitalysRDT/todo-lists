@@ -14,40 +14,27 @@ const staticLists: ITodoList[] = [
   },
 ]
 
-export const listLists = async (
- request: FastifyRequest, 
- reply: FastifyReply) => {
-
-  Promise.resolve(staticLists)
-  .then((result) => {
-	reply.send( result )
-  })
-}
-
-export async function addList(
-    request: FastifyRequest<{ Body: { name: string } }>,
+export async function listLists(
+    request: FastifyRequest, 
     reply: FastifyReply
   ) {
-    const { name } = request.body;
+    console.log('DB status', this.level.listsdb.status)
+    const listsIter = this.level.listsdb.iterator()
   
-    // Validation de l'entrée
-    if (!name) {
-      return reply.status(400).send({ error: 'Name is required' });
+    const result: ITodoList[] = []
+    for await (const [key, value] of listsIter) {
+      result.push(JSON.parse(value))
     }
-  
-    // Génération d'un ID unique pour la nouvelle liste
-    const newId = `l-${staticLists.length + 1}`;
-  
-    // Création de la nouvelle liste
-    const newList: ITodoList = {
-      id: newId,
-      description: name,
-      done: false,
-    };
-  
-    // Ajout de la nouvelle liste au tableau statique
-    staticLists.push(newList);
-  
-    // Retourne la nouvelle liste créée
-    return reply.status(201).send({ message: 'List added successfully', list: newList });
+    reply.send(result)
+  }
+
+  export async function addLists(
+    request: FastifyRequest, 
+    reply: FastifyReply
+  ) {
+   const list = request.body as ITodoList
+   const result = await this.level.listsdb.put(
+     list.id.toString(), JSON.stringify(list)
+   )
+   reply.send( result )
   }
