@@ -1,16 +1,21 @@
-import { FastifyInstance } from 'fastify'
-import * as listsController from '../../controllers/lists.controller'
+import { FastifyInstance } from "fastify";
+import * as listsController from "../../controllers/lists.controller";
 
 async function lists(fastify: FastifyInstance) {
+  // Créer une liste
+  fastify.post("/", listsController.createList);
 
-  fastify.get('/', listsController.listLists)
+  // Récupérer toutes les listes
+  fastify.get("/", listsController.getLists);
 
-  // TODO implement addList in controller
+  // Ajouter un item à une liste
+  fastify.post("/:listId/items", listsController.addItemToList);
 
+  // Supprimer une liste
+  fastify.delete("/:listId", listsController.deleteList);
 
-  // fastify.post('/', listsController.addList)
-  fastify.post('/', listsController.addLists)
-
+  // Mettre à jour le statut d'un item
+  fastify.patch("/:listId/items/:itemId", listsController.updateItemStatus);
 }
 
-export default lists
+export default lists;
