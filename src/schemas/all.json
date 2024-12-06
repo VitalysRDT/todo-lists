@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "ITaskItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "IN-PROGRESS",
+            "DONE"
+          ]
+        },
+        "assignedTo": {
+          "$ref": "IUser#"
+        }
+      },
+      "required": [
+        "id",
+        "description",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "IUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "ITodoList": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isDone": {
+          "type": "boolean"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "ITaskItem#"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "isDone",
+        "items"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

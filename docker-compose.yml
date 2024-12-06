@@ -1,0 +1,14 @@
+services:
+  todo-list-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 3000:3000
+
+  db:
+    image: redis:7.4.1
+    ports:
+      - 6379:6379
